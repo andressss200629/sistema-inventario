@@ -1,0 +1,275 @@
+
+:root {
+    --azul-bodega: #0F2942;
+    --ambar: #E8A33D;
+    --verde-stock: #2F7A63;
+    --fondo: #F5F6F8;
+    --texto: #1B2430;
+    --borde: #D8DCE2;
+}
+
+/* ---------- CONFIGURACIÓN GENERAL ---------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: var(--fondo);
+    color: var(--texto);
+    line-height: 1.5;
+}
+
+/* ---------- ENCABEZADO ---------- */
+.site-header {
+    background-color: var(--azul-bodega);
+    color: #FFFFFF;
+    padding: 24px 20px;
+    text-align: center;
+}
+
+.site-header h1 {
+    margin: 0 0 4px 0;
+    font-size: 1.9rem;
+    letter-spacing: 0.5px;
+}
+
+.site-header h2 {
+    margin: 0;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--ambar);
+}
+
+/* ---------- NAVEGACIÓN ---------- */
+.navbar {
+    background-color: var(--azul-bodega) !important;
+    padding: 12px 0;
+}
+
+.navbar-brand {
+    color: #FFFFFF !important;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.navbar-nav .nav-link {
+    color: #FFFFFF !important;
+    margin-left: 15px;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #FFFFFF !important;
+}
+
+.navbar-nav .nav-link.active {
+    background-color: var(--ambar) !important;
+    color: var(--azul-bodega) !important;
+    font-weight: bold;
+}
+
+.navbar-toggler {
+    border-color: #FFFFFF;
+}
+
+/* ---------- CONTENIDO PRINCIPAL ---------- */
+main {
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.titulo-seccion {
+    color: var(--azul-bodega);
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+/* ---------- TARJETAS ---------- */
+.tarjeta {
+    background-color: #FFFFFF;
+    border: 1px solid var(--borde);
+    border-left: 4px solid var(--ambar);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.tarjeta h2 {
+    margin-top: 0;
+    color: var(--azul-bodega);
+    font-size: 1.3rem;
+}
+
+/* ---------- IMÁGENES ---------- */
+.imagen-inicio {
+    display: block;
+    max-width: 240px;
+    margin: 0 auto;
+    border-radius: 6px;
+}
+
+.imagen-inicio-grande {
+    max-width: 100%;
+    width: 100%;
+}
+
+/* ---------- LISTAS ---------- */
+ul, ol {
+    padding-left: 20px;
+}
+
+/* ---------- FORMULARIOS ---------- */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.campo label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--azul-bodega);
+}
+
+.campo input, .campo select {
+    padding: 10px;
+    border: 1px solid var(--borde);
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: var(--fondo);
+}
+
+.campo input:focus, .campo select:focus {
+    outline: 2px solid var(--verde-stock);
+    outline-offset: 1px;
+    background-color: #FFFFFF;
+}
+
+/* ---------- BOTONES ---------- */
+.botones {
+    display: flex;
+    gap: 12px;
+    margin-top: 6px;
+    justify-content: center;
+}
+
+.btn {
+    border: none;
+    border-radius: 4px;
+    padding: 11px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primario {
+    background-color: var(--ambar);
+    color: var(--azul-bodega);
+}
+
+.btn-primario:hover {
+    background-color: #d4922e;
+}
+
+.btn-secundario {
+    background-color: transparent;
+    color: var(--azul-bodega);
+    border: 1px solid var(--borde);
+}
+
+.btn-secundario:hover {
+    background-color: var(--fondo);
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    margin: 3px;
+}
+
+/* ---------- TABLA ---------- */
+.tabla-envoltorio {
+    overflow-x: auto;
+}
+
+.tabla-productos {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.tabla-productos thead {
+    background-color: var(--azul-bodega);
+    color: #FFFFFF;
+}
+
+.tabla-productos th,
+.tabla-productos td {
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--borde);
+}
+
+.tabla-productos tbody tr:nth-child(even) {
+    background-color: var(--fondo);
+}
+
+.tabla-productos tbody tr:hover {
+    background-color: #EAF3EF;
+}
+
+/* ---------- TARJETAS DE PRODUCTOS ---------- */
+.tarjetas-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.producto {
+    background-color: #FFFFFF;
+    border: 1px solid var(--borde);
+    border-left: 4px solid var(--verde-stock);
+    border-radius: 6px;
+    padding: 18px;
+    text-align: center;
+}
+
+.producto h3 {
+    color: var(--azul-bodega);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+/* ---------- PIE DE PÁGINA ---------- */
+.site-footer {
+    background-color: var(--azul-bodega);
+    color: #FFFFFF;
+    text-align: center;
+    padding: 18px;
+    margin-top: 32px;
+    font-size: 0.9rem;
+}
+
+/* ---------- DISEÑO RESPONSIVO ---------- */
+@media (max-width: 600px) {
+    .site-header h1 { font-size: 1.5rem; }
+    .navbar-nav .nav-link { margin-left: 0; }
+    .botones { flex-direction: column; }
+    .btn { width: 100%; }
+    .tarjeta { padding: 16px; }
+}

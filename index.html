@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Inicio — Sistema de Inventario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --azul-oscuro: #1e3a8a;
+            --azul: #2563eb;
+            --azul-medio: #3b82f6;
+            --azul-claro: #60a5fa;
+            --morado-oscuro: #3730a3;
+            --morado: #4f46e5;
+            --morado-medio: #6366f1;
+            --gris-oscuro: #1f2937;
+            --gris-medio: #475569;
+            --gris-claro: #e2e8f0;
+            --blanco: #ffffff;
+            --exito: #059669;
+            --peligro: #dc2626;
+            --informacion: #d97706;
+            --sombra-suave: 0 8px 30px rgba(37, 99, 235, 0.08);
+            --sombra-media: 0 12px 40px rgba(79, 70, 229, 0.15);
+            /* Color único para el borde de la foto */
+            --borde-foto: #2563eb;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Open Sans', sans-serif;
+            background: linear-gradient(180deg, #eff6ff 0%, #eef2ff 35%, #f0f4ff 65%, #f8fafc 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        @keyframes apareceSuave {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subeBaja {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes desplazaBrillo {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .navbar {
+            background: linear-gradient(90deg, var(--azul-oscuro), var(--morado-oscuro), var(--azul), var(--morado));
+            background-size: 300% 100%;
+            animation: desplazaBrillo 20s linear infinite;
+            box-shadow: 0 5px 30px rgba(30, 58, 138, 0.3);
+            padding: 1.1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.55rem;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .navbar-brand span {
+            font-size: 2.3rem;
+            animation: subeBaja 4s ease-in-out infinite;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.94) !important;
+            font-weight: 500;
+            padding: 0.75rem 1.4rem !important;
+            margin: 0 0.4rem;
+            border-radius: 12px;
+            transition: all 0.35s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255,255,255,0.15);
+            color: white !important;
+            transform: translateY(-3px);
+        }
+        .encabezado-principal {
+            background: linear-gradient(135deg, var(--azul-oscuro) 0%, #2e1065 35%, var(--morado) 70%, var(--azul) 100%);
+            background-size: 250% 100%;
+            animation: desplazaBrillo 15s ease infinite alternate;
+            color: white;
+            text-align: center;
+            padding: 4.5rem 2.5rem;
+            margin-bottom: 3.5rem;
+            border-radius: 0 0 70px 70px;
+            box-shadow: 0 15px 60px rgba(30, 58, 138, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .encabezado-principal h1 {
+            margin: 0 0 1rem 0;
+            font-size: 2.8rem;
+            font-weight: 800;
+            position: relative; z-index: 1;
+        }
+        .encabezado-principal h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 400;
+            opacity: 0.93;
+            position: relative; z-index: 1;
+        }
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 5rem;
+        }
+        .tarjeta {
+            background: rgba(255,255,255,0.97);
+            border-radius: 26px;
+            box-shadow: var(--sombra-suave);
+            padding: 2.4rem;
+            margin-bottom: 2.4rem;
+            animation: apareceSuave 0.8s ease forwards;
+            opacity: 0;
+        }
+        .tarjeta:nth-child(1) { animation-delay: 0.1s; }
+        .tarjeta:nth-child(2) { animation-delay: 0.23s; }
+        .tarjeta:nth-child(3) { animation-delay: 0.36s; }
+        .tarjeta:nth-child(4) { animation-delay: 0.49s; }
+        .tarjeta:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--sombra-media);
+        }
+        .tarjeta h2 {
+            background: linear-gradient(90deg, var(--azul-oscuro), var(--morado));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--gris-claro);
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        /* ✅ FOTO CON BORDE DE UN SOLO COLOR — SIN MARCO EXTERIOR */
+        .foto-aprendiz {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--borde-foto); /* Un solo color limpio */
+            background-color: transparent;
+        }
+        .foto-contenedor {
+            position: relative;
+            flex-shrink: 0;
+        }
+        /* ❌ ELIMINAMOS el marco degradado exterior */
+        .foto-contenedor::before {
+            content: none;
+        }
+        .lista-funciones { list-style: none; padding: 0; margin: 0; }
+        .lista-funciones li {
+            padding: 1.1rem 1.4rem;
+            margin: 0.7rem 0;
+            background: linear-gradient(90deg, #eff6ff, #eef2ff);
+            border-radius: 14px;
+            font-size: 1.06rem;
+            border-left: 4px solid var(--azul);
+            transition: all 0.35s ease;
+        }
+        .lista-funciones li:hover {
+            transform: translateX(10px);
+            background: linear-gradient(90deg, #dbeafe, #e0e7ff);
+        }
+        .contenedor-productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 1.4rem;
+            margin-top: 1.4rem;
+        }
+        .tarjeta-producto {
+            background: linear-gradient(135deg, #f8fafc, #eff6ff);
+            border-radius: 20px;
+            padding: 1.6rem;
+            border-left: 5px solid var(--azul);
+            transition: all 0.35s ease;
+        }
+        .tarjeta-producto.agotado {
+            border-left-color: var(--peligro);
+            background: linear-gradient(135deg, #fef2f2, #fef2f2);
+        }
+        .tarjeta-producto h4 {
+            margin: 0 0 0.9rem 0;
+            color: var(--azul-oscuro);
+            font-weight: 700;
+        }
+        .estadisticas-fila {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.6rem;
+        }
+        @media (max-width: 768px) {
+            .estadisticas-fila { grid-template-columns: 1fr; }
+        }
+        .tarjeta-estadistica {
+            border-radius: 22px;
+            padding: 2.2rem 1.5rem;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+        }
+        .tarjeta-estadistica:hover {
+            transform: translateY(-8px);
+        }
+        .est-total { background: linear-gradient(135deg, var(--azul-oscuro), var(--azul), var(--azul-claro)); }
+        .est-disponibles { background: linear-gradient(135deg, #047857, #10b981, #34d399); }
+        .est-agotados { background: linear-gradient(135deg, #b91c1c, #dc2626, #f87171); }
+        .est-etiqueta { font-size: 1.05rem; opacity: 0.95; margin-bottom: 0.6rem; }
+        .est-numero { font-size: 3.4rem; font-weight: 800; line-height: 1; }
+        .est-barra {
+            height: 12px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 12px;
+            margin-top: 1.2rem;
+            overflow: hidden;
+        }
+        .est-relleno {
+            height: 100%;
+            background: white;
+            border-radius: 12px;
+            transition: width 1.5s ease;
+        }
+        .site-footer {
+            background: linear-gradient(135deg, var(--gris-oscuro), var(--azul-oscuro), #312e81);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 3.5rem;
+            border-radius: 40px 40px 0 0;
+            box-shadow: 0 -8px 40px rgba(30, 58, 138, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><span>📦</span> Sistema de Inventario</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">🏠 Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.html">📋 Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="registrar.html">➕ Registrar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contactanos.html">✉️ Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="encabezado-principal">
+        <h1>🌟 Sistema de Gestión de Inventario</h1>
+        <h2>Tecnólogo en Análisis y Desarrollo de Software — SENA</h2>
+    </header>
+
+    <main>
+        <section class="tarjeta">
+            <h2>👤 Presentación del Aprendiz</h2>
+            <div style="display:flex; align-items:center; gap:2.5rem; flex-wrap:wrap;">
+                <div class="foto-contenedor">
+                    <img src="img/aprendiz.jpg" alt="Foto de Andres Perez" class="foto-aprendiz" onerror="this.alt='Imagen no disponible';">
+                </div>
+                <div style="flex:1; min-width:280px;">
+                    <p style="font-size: 1.08rem; margin: 0.6rem 0;"><strong style="color:var(--azul-oscuro);">Nombre:</strong> Andres Perez</p>
+                    <p style="font-size: 1.08rem; margin: 0.6rem 0;"><strong style="color:var(--azul-oscuro);">Ficha:</strong> 3233929</p>
+                    <p style="font-size: 1.08rem; margin: 0.6rem 0;"><strong style="color:var(--azul-oscuro);">Programa:</strong> Tecnólogo en Análisis y Desarrollo de Software</p>
+                    <p style="font-size: 1.08rem; margin: 0.6rem 0;"><strong style="color:var(--azul-oscuro);">Centro:</strong> SENA</p>
+                </div>
+            </div>
+            <p style="color: var(--gris-medio); margin-top: 2rem; line-height: 1.8; font-size:1.05rem;">
+                Este sistema permite registrar, consultar, editar y eliminar productos, calcular valores y detectar productos agotados. Solución organizada y confiable para la administración de inventarios.
+            </p>
+        </section>
+
+        <section class="tarjeta">
+            <h2>⚙️ Funcionalidades del Sistema</h2>
+            <ul class="lista-funciones">
+                <li>📝 Registro de nuevos productos en la base de datos</li>
+                <li>📋 Consulta completa de productos registrados</li>
+                <li>✏️ Edición y actualización de información</li>
+                <li>🗑️ Eliminación segura de productos</li>
+                <li>💰 Cálculo automático de subtotales y valor total</li>
+                <li>🔴 Identificación de productos sin existencias</li>
+            </ul>
+        </section>
+
+        <section class="tarjeta">
+            <h2>📦 Productos Registrados Recientemente</h2>
+            <div id="ultimos-productos" class="contenedor-productos">
+                <p style="color:var(--gris-medio);text-align:center;padding:3rem;width:100%;">⏳ Cargando información...</p>
+            </div>
+        </section>
+
+        <section class="tarjeta">
+            <h2>📊 Estado del Inventario</h2>
+            <div class="estadisticas-fila">
+                <div class="tarjeta-estadistica est-total">
+                    <div class="est-etiqueta">Productos Totales</div>
+                    <div class="est-numero" id="resumen-total">0</div>
+                    <div class="est-barra"><div class="est-relleno" style="width:100%"></div></div>
+                </div>
+                <div class="tarjeta-estadistica est-disponibles">
+                    <div class="est-etiqueta">Disponibles en Stock</div>
+                    <div class="est-numero" id="resumen-disponibles">0</div>
+                    <div class="est-barra"><div class="est-relleno" id="barra-disponibles" style="width:0%"></div></div>
+                </div>
+                <div class="tarjeta-estadistica est-agotados">
+                    <div class="est-etiqueta">Productos Agotados</div>
+                    <div class="est-numero" id="resumen-agotados">0</div>
+                    <div class="est-barra"><div class="est-relleno" id="barra-agotados" style="width:0%"></div></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p style="margin:0; font-size:1.05rem; line-height:1.8;">
+            Sistema Web de Gestión de Inventario<br>
+            SENA — Tecnólogo en Análisis y Desarrollo de Software<br>
+            <strong>Aprendiz:</strong> Andres Perez &nbsp;|&nbsp; <strong>Ficha:</strong> 3233929
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API = "/api/productos";
+        let listaProductos = [];
+        
+        async function cargarProductos() {
+            try {
+                const respuesta = await fetch(API);
+                if (!respuesta.ok) throw new Error("Error del servidor");
+                const datos = await respuesta.json();
+                listaProductos = Array.isArray(datos) ? datos : [];
+                dibujarTodo();
+            } catch (error) {
+                console.error("❌ Error:", error);
+                const contenedor = document.getElementById('ultimos-productos');
+                contenedor.innerHTML = '<p style="color:var(--peligro);text-align:center;padding:2rem;">⚠️ No se pudo conectar con el servidor. Verifica que Java esté encendido.</p>';
+            }
+        }
+        
+        function dibujarTodo() {
+            const contenedor = document.getElementById('ultimos-productos');
+            
+            if (listaProductos.length === 0) {
+                contenedor.innerHTML = '<p style="color:var(--gris-medio);text-align:center;padding:3rem;width:100%;">📭 No hay productos registrados. Ve a "Registrar".</p>';
+                document.getElementById('resumen-total').textContent = '0';
+                document.getElementById('resumen-disponibles').textContent = '0';
+                document.getElementById('resumen-agotados').textContent = '0';
+                return;
+            }
+            
+            const ultimos = listaProductos.slice(-5).reverse();
+            contenedor.innerHTML = ultimos.map(p => {
+                const sinStock = parseInt(p.cantidad) <= 0;
+                return `
+                <div class="tarjeta-producto ${sinStock ? 'agotado' : ''}">
+                    <h4>${p.codigo} — ${p.nombre}</h4>
+                    <p style="margin:0.4rem 0;"><strong>Precio:</strong> $${parseFloat(p.precio).toLocaleString('es-CO')}</p>
+                    <p style="margin:0.4rem 0; font-weight:600;">
+                        <strong>Cantidad:</strong> ${p.cantidad}
+                        ${sinStock ? '<span style="color:var(--peligro); margin-left:8px;">⚠️ AGOTADO</span>' : ''}
+                    </p>
+                </div>`;
+            }).join('');
+            
+            const total = listaProductos.length;
+            const disponibles = listaProductos.filter(p => parseInt(p.cantidad) > 0).length;
+            const agotados = listaProductos.filter(p => parseInt(p.cantidad) <= 0).length;
+            
+            document.getElementById('resumen-total').textContent = total;
+            document.getElementById('resumen-disponibles').textContent = disponibles;
+            document.getElementById('resumen-agotados').textContent = agotados;
+            
+            setTimeout(() => {
+                document.getElementById('barra-disponibles').style.width = total > 0 ? `${(disponibles/total)*100}%` : '0%';
+                document.getElementById('barra-agotados').style.width = total > 0 ? `${(agotados/total)*100}%` : '0%';
+            }, 600);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarProductos();
+            setInterval(cargarProductos, 10000);
+        });
+    </script>
+</body>
+</html>   

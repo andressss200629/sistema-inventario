@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Contáctanos — Sistema de Inventario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --azul-oscuro: #0F2942;
+            --azul: #1E40AF;
+            --azul-medio: #2563EB;
+            --azul-claro: #3B82F6;
+            --ambar: #E8A33D;
+            --ambar-claro: #FBBF24;
+            --verde-stock: #2F7A63;
+            --verde-claro: #10B981;
+            --gris-oscuro: #1F2937;
+            --gris-medio: #475569;
+            --gris-claro: #E2E8F0;
+            --blanco: #FFFFFF;
+            --fondo: #F8FAFC;
+            --sombra-suave: 0 8px 30px rgba(15, 41, 66, 0.08);
+            --sombra-media: 0 12px 40px rgba(30, 64, 175, 0.15);
+            --sombra-fuerte: 0 20px 60px rgba(15, 41, 66, 0.2);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Open Sans', sans-serif;
+            background: linear-gradient(180deg, #EFF6FF 0%, #F0F4FF 40%, #F8FAFC 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        @keyframes desplazaBrillo {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes apareceSuave {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .navbar {
+            background: linear-gradient(90deg, var(--azul-oscuro), var(--azul), var(--azul-medio), var(--azul-oscuro));
+            background-size: 300% 100%;
+            animation: desplazaBrillo 25s linear infinite;
+            box-shadow: 0 4px 30px rgba(15, 41, 66, 0.25);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navbar-brand span {
+            font-size: 2rem;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            padding: 0.7rem 1.3rem !important;
+            margin: 0 0.3rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            background: rgba(232, 163, 61, 0.25);
+            color: var(--ambar) !important;
+            transform: translateY(-2px);
+        }
+        .encabezado-pagina {
+            background: linear-gradient(135deg, var(--azul-oscuro) 0%, var(--azul) 50%, var(--azul-oscuro) 100%);
+            padding: 3.5rem 2rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 10px 50px rgba(15, 41, 66, 0.35);
+        }
+        .encabezado-fondo {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            opacity: 0.06;
+            background-image: url('img/bodega-inicio.svg');
+            background-size: cover;
+            background-position: center;
+        }
+        .encabezado-contenido {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+        }
+        .encabezado-contenido h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .encabezado-contenido h2 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+        }
+        .tarjeta {
+            background: rgba(255,255,255,0.96);
+            border-radius: 24px;
+            box-shadow: var(--sombra-suave);
+            padding: 2.4rem;
+            height: 100%;
+            border-left: 5px solid var(--ambar);
+            animation: apareceSuave 0.7s ease forwards;
+            opacity: 0;
+        }
+        .tarjeta:nth-child(1) { animation-delay: 0.1s; }
+        .tarjeta:nth-child(2) { animation-delay: 0.25s; }
+        .tarjeta h2 {
+            color: var(--azul-oscuro);
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--gris-claro);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .tarjeta > p {
+            color: var(--gris-medio);
+            line-height: 1.7;
+            margin-bottom: 1.8rem;
+            font-size: 1rem;
+        }
+        .contacto-info {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .contacto-info li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gris-claro);
+            color: var(--gris-oscuro);
+            line-height: 1.6;
+            font-size: 0.98rem;
+            transition: padding-left 0.2s ease;
+        }
+        .contacto-info li:hover {
+            padding-left: 8px;
+        }
+        .contacto-info li:last-child {
+            border-bottom: none;
+        }
+        .contacto-info li strong {
+            color: var(--azul-oscuro);
+            display: inline-block;
+            min-width: 150px;
+            font-weight: 600;
+        }
+        .campo {
+            margin-bottom: 1.4rem;
+        }
+        .campo label {
+            display: block;
+            color: var(--gris-oscuro);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .campo input, .campo textarea {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid var(--gris-claro);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+        }
+        .campo input:focus, .campo textarea:focus {
+            border-color: var(--azul);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+            outline: none;
+        }
+        .campo textarea {
+            resize: none;
+            min-height: 140px;
+        }
+        .botones {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.8rem;
+        }
+        .btn-enviar {
+            flex: 1;
+            background: linear-gradient(90deg, var(--ambar), var(--ambar-claro), var(--ambar));
+            background-size: 200% 100%;
+            color: var(--azul-oscuro) !important;
+            border: none;
+            font-weight: 700 !important;
+            padding: 0.9rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-enviar:hover {
+            background-position: 100% 0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 163, 61, 0.35);
+        }
+        .btn-limpiar {
+            flex: 1;
+            background: linear-gradient(90deg, var(--gris-claro), #CBD5E1);
+            color: var(--gris-oscuro) !important;
+            border: none;
+            font-weight: 600 !important;
+            padding: 0.9rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-limpiar:hover {
+            background: linear-gradient(90deg, #CBD5E1, var(--gris-medio));
+            transform: translateY(-2px);
+        }
+        .site-footer {
+            background: linear-gradient(135deg, var(--azul-oscuro), #1E3A8A, var(--azul-oscuro));
+            color: white;
+            text-align: center;
+            padding: 2.5rem 2rem;
+            margin-top: 3rem;
+            border-radius: 30px 30px 0 0;
+            box-shadow: 0 -6px 30px rgba(15, 41, 66, 0.25);
+        }
+        @media (max-width: 768px) {
+            .encabezado-contenido h1 { font-size: 1.8rem; }
+            .botones { flex-direction: column; }
+            .contacto-info li strong { display: block; margin-bottom: 2px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <span>📦</span> Sistema de Inventario
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">🏠 Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.html">📋 Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="registrar.html">➕ Registrar</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contactanos.html">✉️ Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="encabezado-pagina">
+        <div class="encabezado-fondo"></div>
+        <div class="encabezado-contenido">
+            <h1>✉️ Contáctanos</h1>
+            <h2>Estamos aquí para ayudarte — escríbenos y te responderemos pronto</h2>
+        </div>
+    </header>
+
+    <main>
+        <div class="row g-4">
+            <div class="col-12 col-md-6">
+                <section class="tarjeta">
+                    <h2>📋 Información de Contacto</h2>
+                    <p>Si tienes dudas sobre el manejo del Sistema de Inventario o deseas reportar una novedad con algún producto, puedes comunicarte con el área de soporte a través de los siguientes medios:</p>
+                    <ul class="contacto-info">
+                        <li>
+                            <strong>👤 Encargado del sistema:</strong>
+                            Andres Perez
+                        </li>
+                        <li>
+                            <strong>📧 Correo electrónico:</strong>
+                            soporte.inventario@bodegacentral.com
+                        </li>
+                        <li>
+                            <strong>📞 Teléfono / WhatsApp:</strong>
+                            (601) 745 21 08
+                        </li>
+                        <li>
+                            <strong>📍 Dirección:</strong>
+                            Carrera 45 #12-30, Bodega 7, Bogotá D.C.
+                        </li>
+                        <li>
+                            <strong>🕐 Horario de atención:</strong>
+                            Lunes a viernes, 8:00 a.m. — 5:00 p.m.
+                        </li>
+                    </ul>
+                </section>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <section class="tarjeta">
+                    <h2>✍️ Envíanos un Mensaje</h2>
+                    <form id="form-contacto">
+                        <div class="campo">
+                            <label for="nombre">👤 Tu Nombre:</label>
+                            <input type="text" id="nombre" placeholder="Ejemplo: Laura Gómez" required>
+                        </div>
+                        <div class="campo">
+                            <label for="correo">📧 Correo de Respuesta:</label>
+                            <input type="email" id="correo" placeholder="Ejemplo: laura@correo.com" required>
+                        </div>
+                        <div class="campo">
+                            <label for="mensaje">💬 Tu Mensaje:</label>
+                            <textarea id="mensaje" placeholder="Escribe aquí tu consulta, sugerencia o novedad..." required></textarea>
+                        </div>
+                        <div class="botones">
+                            <button type="submit" class="btn-enviar flex-fill">✅ Enviar Mensaje</button>
+                            <button type="reset" class="btn-limpiar flex-fill">🔄 Limpiar</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p style="margin:0; font-size:1rem; line-height:1.8;">
+            <strong>Sistema Web de Gestión de Inventario</strong><br>
+            Desarrollado en el marco de la formación en Tecnología<br>
+            Servicio Nacional de Aprendizaje — SENA<br><br>
+            <strong>Aprendiz:</strong> Andres Perez &nbsp;|&nbsp; <strong>Ficha:</strong> 3233929
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('form-contacto').addEventListener('submit', function (e) {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value.trim();
+            const correo = document.getElementById('correo').value.trim();
+            const mensaje = document.getElementById('mensaje').value.trim();
+            
+            if (!nombre || !correo || !mensaje) {
+                alert("⚠️ Por favor completa todos los campos.");
+                return;
+            }
+            
+            alert(`✅ Gracias ${nombre}, tu mensaje fue enviado.\nTe responderemos pronto a: ${correo}`);
+            this.reset();
+        });
+    </script>
+</body>
+</html>
